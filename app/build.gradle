@@ -8,14 +8,14 @@ apply plugin: 'kotlin-kapt'  //kapt3插件
 
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'ktmp'
-            keyPassword 'ktmp123456'
-            storeFile file('../ktmp.jks')
-            storePassword 'ktmp123456'
-        }
-    }
+//    signingConfigs {
+//        config {
+//            keyAlias 'ktmp'
+//            keyPassword 'ktmp123456'
+//            storeFile file('../ktmp.jks')
+//            storePassword 'ktmp123456'
+//        }
+//    }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     defaultConfig {
         applicationId "com.xufeng.mvpkotlin"
@@ -29,7 +29,7 @@ android {
                 includeCompileClasspath true
             }
         }
-        signingConfig signingConfigs.config
+//        signingConfig signingConfigs.config
         // 实现毛玻璃那种透明的效果需要添加的库
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true    // Enable RS support
@@ -44,13 +44,11 @@ android {
         debug {
             minifyEnabled false
             debuggable true
-            signingConfig signingConfigs.config
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
-            signingConfig signingConfigs.config
             zipAlignEnabled true
         }
 
