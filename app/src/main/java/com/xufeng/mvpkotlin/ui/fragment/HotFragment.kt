@@ -1,4 +1,4 @@
-package com.xufeng.mvpkotlin.main
+package com.xufeng.mvpkotlin.ui.fragment
 
 import android.os.Bundle
 import com.xufeng.mvpkotlin.R
@@ -9,15 +9,16 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file
  */
-class MeituFragment : BaseFragment() {
+class HotFragment : BaseFragment() {
+
     private var mTitle: String? = null
 
     /**
      * 伴生对象
      */
     companion object {
-        fun getInstance(title: String): MeituFragment {
-            val fragment = MeituFragment()
+        fun getInstance(title: String): HotFragment {
+            val fragment = HotFragment()
             val bundle = Bundle()
             fragment.arguments = bundle
             fragment.mTitle = title
@@ -25,9 +26,11 @@ class MeituFragment : BaseFragment() {
         }
     }
 
+    override fun initView() {
+    }
+
     override fun lazyLoad() {
-        toast("meitu title" + mTitle)
-        tv_title.text = mTitle
+        toast("Hot title" + mTitle)
     }
 
     override fun getLayoutId(): Int = R.layout.content_main

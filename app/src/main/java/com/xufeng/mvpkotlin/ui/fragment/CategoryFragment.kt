@@ -1,9 +1,8 @@
-package com.xufeng.mvpkotlin.main
+package com.xufeng.mvpkotlin.ui.fragment
 
 import android.os.Bundle
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.base.BaseFragment
-import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.support.v4.toast
 
 /**
@@ -25,9 +24,12 @@ class CategoryFragment : BaseFragment() {
         }
     }
 
+    override fun initView() {
+
+    }
+
     override fun lazyLoad() {
         toast("分类title" + mTitle)
-        tv_title.text = mTitle
     }
 
     override fun getLayoutId(): Int = R.layout.content_main

@@ -1,4 +1,4 @@
-package com.xufeng.mvpkotlin.scheduler
+package com.xufeng.mvpkotlin.rx.scheduler
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

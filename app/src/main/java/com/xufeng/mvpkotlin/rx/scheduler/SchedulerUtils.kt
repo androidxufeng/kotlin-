@@ -1,4 +1,4 @@
-package com.xufeng.mvpkotlin.scheduler
+package com.xufeng.mvpkotlin.rx.scheduler
 
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file

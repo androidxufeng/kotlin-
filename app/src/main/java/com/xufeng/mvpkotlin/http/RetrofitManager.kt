@@ -1,8 +1,8 @@
 package com.xufeng.mvpkotlin.http
 
+import com.xufeng.mvpkotlin.api.ApiService
+import com.xufeng.mvpkotlin.api.UriConstant
 import com.xufeng.mvpkotlin.app.MyApplication
-import com.xufeng.mvpkotlin.http.api.ApiService
-import com.xufeng.mvpkotlin.http.api.UriConstant
 import com.xufeng.mvpkotlin.utils.NetworkUtil
 import com.xufeng.mvpkotlin.utils.SpUtils
 import okhttp3.Cache
@@ -25,14 +25,8 @@ object RetrofitManager {
 
     private var retrofit: Retrofit? = null
 
-    private var apiService: ApiService? = null
-
     val service: ApiService by lazy {
-        createRetrofitService(ApiService::class.java)
-    }
-
-    private fun <T> createRetrofitService(clazz: Class<T>): T {
-        return getRetrofit()!!.create(clazz)
+        getRetrofit()!!.create(ApiService::class.java)
     }
 
     /**
@@ -59,7 +53,7 @@ object RetrofitManager {
             val originRequest = chain.request()
             val request = originRequest.newBuilder()
                     // Provide your custom header here
-                    .header("token", SpUtils.get("token", "",MyApplication.context) as String)
+                    .header("token", SpUtils.get("token", "", MyApplication.context) as String)
                     .method(originRequest.method(), originRequest.body())
                     .build()
             //默认最后一行是返回值

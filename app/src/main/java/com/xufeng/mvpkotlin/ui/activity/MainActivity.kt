@@ -1,4 +1,4 @@
-package com.xufeng.mvpkotlin.main
+package com.xufeng.mvpkotlin.ui.activity
 
 import android.os.Bundle
 import android.support.v4.app.FragmentTransaction
@@ -7,6 +7,10 @@ import com.flyco.tablayout.listener.OnTabSelectListener
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.base.BaseActivity
 import com.xufeng.mvpkotlin.bean.TabEntity
+import com.xufeng.mvpkotlin.ui.fragment.CategoryFragment
+import com.xufeng.mvpkotlin.ui.fragment.HomeFragment
+import com.xufeng.mvpkotlin.ui.fragment.HotFragment
+import com.xufeng.mvpkotlin.ui.fragment.MeituFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 

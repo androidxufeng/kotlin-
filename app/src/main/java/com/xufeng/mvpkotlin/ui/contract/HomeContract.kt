@@ -1,22 +1,22 @@
-package com.xufeng.mvpkotlin.main
+package com.xufeng.mvpkotlin.ui.contract
 
 import com.xufeng.mvpkotlin.base.BaseView
 import com.xufeng.mvpkotlin.base.IPresenter
-import com.xufeng.mvpkotlin.bean.FuckGoods
+import com.xufeng.mvpkotlin.bean.HomeBean
 
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file
  */
-interface MainContract {
+interface HomeContract {
 
     interface View : BaseView {
 
         fun showError(msg: String)
 
-        fun showAndroidData(data: List<FuckGoods>)
+        fun showHomeData(data: HomeBean)
     }
 
     interface Presenter : IPresenter<View> {
-        fun getAndroidData(page: Int)
+        fun requestHomeData(num: Int)
     }
 }

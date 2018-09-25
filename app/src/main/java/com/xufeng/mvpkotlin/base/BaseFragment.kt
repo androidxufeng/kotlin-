@@ -22,7 +22,7 @@ abstract class BaseFragment : Fragment() {
     private var hasLoadData: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(getLayoutId(), null)
+        return inflater.inflate(getLayoutId(), null)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -35,6 +35,7 @@ abstract class BaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isViewPrepare = true
+        initView()
         lazyLoadDataIfPrepared()
     }
 
@@ -51,5 +52,7 @@ abstract class BaseFragment : Fragment() {
     abstract fun getLayoutId(): Int
 
     abstract fun lazyLoad()
+
+    abstract fun initView()
 
 }
