@@ -171,6 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
+                android:maxLines="1"
                 android:textSize="14sp"
                 tools:text="My name" />
 
@@ -179,6 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:maxLines="1"
                 android:textColor="@color/color_darker_gray"
                 android:textSize="12sp"
                 tools:text="发现艺术背后的故事" />

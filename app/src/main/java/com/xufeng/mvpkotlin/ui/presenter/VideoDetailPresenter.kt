@@ -40,16 +40,16 @@ class VideoDetailPresenter : BasePresenter<VideoDetailContract.View>(), VideoDet
 
         checkViewAttached()
 
-        playInfo?.let {
+        if (playInfo!!.size > 1) {
             if (isWifi) {
-                for (info in it) {
+                for (info in playInfo) {
                     if (info.type == "high") {
                         mView?.setVideoUrl(info.url)
                         break
                     }
                 }
             } else {
-                for (info in it) {
+                for (info in playInfo) {
                     if (info.type == "normal") {
                         mView?.setVideoUrl(info.url)
                         //Todo 待完善
@@ -59,6 +59,8 @@ class VideoDetailPresenter : BasePresenter<VideoDetailContract.View>(), VideoDet
                     }
                 }
             }
+        } else {
+            mView?.setVideoUrl(itemInfo.data.playUrl)
         }
 
         val backgroundUrl = itemInfo.data?.cover?.blurred + "/thumbnail/${DisplayManager.getScreenHeight()!! -

@@ -1,10 +1,15 @@
 package com.xufeng.mvpkotlin.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.support.v4.util.Pair
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.bumptech.glide.request.RequestOptions
 import com.xufeng.mvpkotlin.R
@@ -78,10 +83,10 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
     override fun bindData(holder: ViewHolder, data: HomeBean.Issue.Item, position: Int) {
         when (getItemViewType(position)) {
             ITEM_TYPE_BANNER -> {
-                var bannerListData: ArrayList<HomeBean.Issue.Item> = mData.take(bannerItemSize).toCollection(ArrayList())
+                val bannerListData: ArrayList<HomeBean.Issue.Item> = mData.take(bannerItemSize).toCollection(ArrayList())
 
-                var bannerFeedList = ArrayList<String>()
-                var bannerTitleList = ArrayList<String>()
+                val bannerFeedList = ArrayList<String>()
+                val bannerTitleList = ArrayList<String>()
 
                 Observable.fromIterable(bannerListData)
                         .subscribe({ list ->
@@ -99,6 +104,13 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
                                 .apply(RequestOptions().placeholder(R.drawable.default_avatar))
                                 .into(banner.getItemImageView(pos))
                     }
+                }
+
+                //没有使用到的参数在 kotlin 中用"_"代替
+                banner.setDelegate { _, imageView, _, i ->
+
+                    goToVideoPlayer(mContext as Activity, imageView, bannerListData[i])
+
                 }
             }
 
@@ -147,9 +159,7 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
 
         holder.setOnItemClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                val intent = Intent(mContext, VideoDetailActivity::class.java)
-                intent.putExtra(Constant.BUNDLE_VIDEO_DATA, item)
-                mContext?.startActivity(intent)
+                goToVideoPlayer(mContext as Activity, holder.getView<ImageView>(R.id.iv_cover_feed), item)
             }
         })
     }
@@ -161,5 +171,26 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
         //创建view
         val view = mInflate?.inflate(mLayoutId, parent, false)
         return view!!
+    }
+
+    /**
+     * 跳转到视频详情页面播放
+     *
+     * @param activity
+     * @param view
+     */
+    private fun goToVideoPlayer(activity: Activity, view: View, itemData: HomeBean.Issue.Item) {
+        val intent = Intent(activity, VideoDetailActivity::class.java)
+        intent.putExtra(Constant.BUNDLE_VIDEO_DATA, itemData)
+        intent.putExtra(VideoDetailActivity.Companion.TRANSITION, true)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            val pair = Pair<View, String>(view, VideoDetailActivity.Companion.IMG_TRANSITION)
+            val activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    activity, pair)
+            ActivityCompat.startActivity(activity, intent, activityOptions.toBundle())
+        } else {
+            activity.startActivity(intent)
+            activity.overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+        }
     }
 }

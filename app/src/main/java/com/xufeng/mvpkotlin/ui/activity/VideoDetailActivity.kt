@@ -1,7 +1,11 @@
 package com.xufeng.mvpkotlin.ui.activity
 
+import android.annotation.TargetApi
 import android.content.res.Configuration
+import android.os.Build
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.Transition
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.orhanobut.logger.Logger
@@ -18,6 +22,7 @@ import com.xufeng.mvpkotlin.ui.contract.VideoDetailContract
 import com.xufeng.mvpkotlin.ui.presenter.VideoDetailPresenter
 import com.xufeng.mvpkotlin.utils.VideoLisenter
 import kotlinx.android.synthetic.main.activity_video_detail.*
+import org.jetbrains.anko.toast
 
 /**
  * Ver 1.0, 18-9-26, xufeng, Create file
@@ -36,6 +41,10 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
 
     private var isPause: Boolean = false
 
+    private var isTransition: Boolean = false
+
+    private var transition: Transition? = null
+
     private val mPresenter by lazy {
         VideoDetailPresenter()
     }
@@ -46,13 +55,19 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
         return R.layout.activity_video_detail
     }
 
+    companion object {
+        val IMG_TRANSITION = "IMG_TRANSITION"
+        val TRANSITION = "TRANSITION"
+    }
+
     override fun initData() {
         mItemData = intent.getSerializableExtra(Constant.BUNDLE_VIDEO_DATA) as HomeBean.Issue.Item
-        mPresenter.loadVideoInfo(mItemData!!)
+        isTransition = intent.getBooleanExtra(TRANSITION, false)
     }
 
     override fun initView() {
         mPresenter.attachView(this)
+        initTransition()
         orientationUtils = OrientationUtils(this, mVideoView)
         // 是否旋转
         mVideoView.isRotateViewAuto = false
@@ -66,6 +81,11 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
                 super.onPrepared(url, *objects)
                 orientationUtils?.isEnable = true
                 isPlay = true
+            }
+
+            override fun onPlayError(url: String, vararg objects: Any) {
+                super.onPlayError(url, *objects)
+                toast("播放失败")
             }
 
             override fun onAutoComplete(url: String, vararg objects: Any) {
@@ -147,7 +167,12 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
         if (StandardGSYVideoPlayer.backFromWindowFull(this)) {
             return
         }
-        super.onBackPressed()
+        if (isTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            super.onBackPressed()
+        } else {
+            finish()
+            overridePendingTransition(R.anim.anim_in, R.anim.anim_out)
+        }
     }
 
 
@@ -173,6 +198,48 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
         return if (mVideoView.fullWindowPlayer != null) {
             mVideoView.fullWindowPlayer
         } else mVideoView
+    }
+
+    private fun initTransition() {
+        if (isTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            postponeEnterTransition()
+            ViewCompat.setTransitionName(mVideoView, IMG_TRANSITION)
+            addTransitionListener()
+            startPostponedEnterTransition()
+        } else {
+            loadVideoInfo()
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun addTransitionListener() {
+        transition = window.sharedElementEnterTransition
+        transition?.addListener(object : Transition.TransitionListener {
+            override fun onTransitionResume(p0: Transition?) {
+            }
+
+            override fun onTransitionPause(p0: Transition?) {
+            }
+
+            override fun onTransitionCancel(p0: Transition?) {
+            }
+
+            override fun onTransitionStart(p0: Transition?) {
+            }
+
+            override fun onTransitionEnd(p0: Transition?) {
+                Logger.d("onTransitionEnd()------")
+                loadVideoInfo()
+                transition?.removeListener(this)
+            }
+        })
+    }
+
+    /**
+     * 加载视频信息
+     */
+    fun loadVideoInfo() {
+        mPresenter.loadVideoInfo(mItemData!!)
     }
 
 }

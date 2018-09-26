@@ -3,6 +3,7 @@ package com.xufeng.mvpkotlin.bean
 import java.io.Serializable
 
 /**
+ * desc: 首页 Bean（视频详情，相关等）
  * Ver 1.0, 18-9-21, xufeng, Create file
  */
 data class HomeBean(var issueList: ArrayList<Issue>,
@@ -44,7 +45,7 @@ data class HomeBean(var issueList: ArrayList<Issue>,
                             val webUrl: WebUrl,
                             val library: String,
                             val user: User,
-                            val playInfo: ArrayList<PlayInfo>,
+                            val playInfo: ArrayList<PlayInfo>?,
                             val consumption: Consumption,
                             val campaign: Any,
                             val waterMarks: Any,
