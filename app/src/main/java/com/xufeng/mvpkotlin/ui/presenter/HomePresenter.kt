@@ -13,6 +13,8 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
 
     private var mHomeBannerBean: HomeBean? = null
 
+    private var mNextPageUrl: String? = null
+
     private val mModel: HomeModel by lazy {
         HomeModel()
     }
@@ -40,6 +42,7 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
                     mView?.run {
                         if (homeBean != null) {
                             dismissLoading()
+                            mNextPageUrl = homeBean.nextPageUrl
                             //过滤掉 Banner2(包含广告,等无用的 Type), 具体查看接口分析
                             val newBannerItemList = homeBean.issueList[0].itemList
                             newBannerItemList.filter { item ->
@@ -62,6 +65,33 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
                     }
                 }
                 )
+        addSubscription(disposable)
+    }
+
+    override fun loadMoreData() {
+        mView?.showLoading()
+        val disposable = mModel.loadMoreData(mNextPageUrl!!)
+                .compose(SchedulerUtils.ioToMain())
+                .subscribe({ homeBean: HomeBean ->
+                    mView?.apply {
+                        dismissLoading()
+                        //过滤掉 Banner2(包含广告,等无用的 Type), 具体查看接口分析
+                        val newItemList = homeBean.issueList[0].itemList
+                        newItemList.filter { item ->
+                            item.type == "banner2" || item.type == "horizontalScrollCard"
+                        }.forEach { item ->
+                            //移除 item
+                            newItemList.remove(item)
+                        }
+                        mNextPageUrl = homeBean.nextPageUrl
+                        setMoreData(newItemList)
+                    }
+                }, { t ->
+                    mView?.apply {
+                        dismissLoading()
+                        showError(t.toString())
+                    }
+                })
         addSubscription(disposable)
     }
 }

@@ -1,6 +1,6 @@
 package com.xufeng.mvpkotlin.ui.contract
 
-import com.xufeng.mvpkotlin.base.BaseView
+import com.xufeng.mvpkotlin.base.IBaseView
 import com.xufeng.mvpkotlin.base.IPresenter
 import com.xufeng.mvpkotlin.bean.HomeBean
 
@@ -9,14 +9,21 @@ import com.xufeng.mvpkotlin.bean.HomeBean
  */
 interface HomeContract {
 
-    interface View : BaseView {
+    interface View : IBaseView {
 
         fun showError(msg: String)
 
         fun showHomeData(data: HomeBean)
+
+        /**
+         * 设置加载更多的数据
+         */
+        fun setMoreData(itemList: ArrayList<HomeBean.Issue.Item>)
     }
 
     interface Presenter : IPresenter<View> {
         fun requestHomeData(num: Int)
+
+        fun loadMoreData()
     }
 }

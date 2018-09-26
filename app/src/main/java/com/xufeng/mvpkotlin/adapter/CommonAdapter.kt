@@ -8,7 +8,7 @@ import android.view.ViewGroup
 /**
  * Ver 1.0, 18-9-25, xufeng, Create file
  */
-abstract class CommonAdapter<T>(mContext: Context, open var mData: List<T>, private var mLayoutId: Int)
+abstract class CommonAdapter<T>(mContext: Context, var mData: ArrayList<T>, private var mLayoutId: Int)
     : RecyclerView.Adapter<ViewHolder>() {
 
     protected var mInflate: LayoutInflater? = null
@@ -22,7 +22,7 @@ abstract class CommonAdapter<T>(mContext: Context, open var mData: List<T>, priv
         mInflate = LayoutInflater.from(mContext)
     }
 
-    constructor(context: Context, data: List<T>, type: MultipleType<T>) : this(context, data, -1) {
+    constructor(context: Context, data: ArrayList<T>, type: MultipleType<T>) : this(context, data, -1) {
         mTypeSupport = type
     }
 

@@ -32,5 +32,5 @@ class CategoryFragment : BaseFragment() {
         toast("分类title" + mTitle)
     }
 
-    override fun getLayoutId(): Int = R.layout.content_main
+    override fun getLayoutId(): Int = R.layout.fragment_home
 }

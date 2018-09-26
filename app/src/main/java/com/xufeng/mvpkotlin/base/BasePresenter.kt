@@ -6,7 +6,7 @@ import io.reactivex.disposables.Disposable
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file
  */
-abstract class BasePresenter<V : BaseView> : IPresenter<V> {
+abstract class BasePresenter<V : IBaseView> : IPresenter<V> {
 
     var mView: V? = null
             // 不允许外部赋值
@@ -37,7 +37,7 @@ abstract class BasePresenter<V : BaseView> : IPresenter<V> {
     }
 
     private class MvpViewNotAttachedException internal constructor() :
-            RuntimeException("Please call IPresenter.attachView(BaseView) before" +
+            RuntimeException("Please call IPresenter.attachView(IBaseView) before" +
                     " requesting data to the IPresenter")
 
 }

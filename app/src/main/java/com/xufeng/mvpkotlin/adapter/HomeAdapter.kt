@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import cn.bingoogolapple.bgabanner.BGABanner
+import com.bumptech.glide.request.RequestOptions
 import com.xufeng.mvpkotlin.R
+import com.xufeng.mvpkotlin.app.durationFormat
 import com.xufeng.mvpkotlin.bean.HomeBean
 import com.xufeng.mvpkotlin.glide.GlideApp
 import io.reactivex.Observable
@@ -13,31 +15,43 @@ import io.reactivex.Observable
 /**
  * Ver 1.0, 18-9-25, xufeng, Create file
  */
-class HomeAdapter(mContext: Context, mData: List<HomeBean.Issue.Item>) : CommonAdapter<HomeBean.Issue.Item>(mContext, mData, -1) {
+class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : CommonAdapter<HomeBean.Issue.Item>(context, data, -1) {
 
     private var mContext: Context? = null
 
     // banner 作为 RecyclerView 的第一项
-    private var bannerItemSize = 0
+    var bannerItemSize = 0
 
     init {
-        this.mContext = mContext
+        this.mContext = context
     }
 
     companion object {
         private val ITEM_TYPE_BANNER = 1
-        private val ITEM_TYPE_CONTENT = 2
+        private val ITEM_TYPE_TEXT_HEADER = 2   //textHeader
+        private val ITEM_TYPE_CONTENT = 3
     }
 
     fun setBanner(count: Int) {
         bannerItemSize = count
     }
 
+    /**
+     * 添加更多数据
+     */
+    fun addItemData(itemList: ArrayList<HomeBean.Issue.Item>) {
+        mData.addAll(itemList)
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
-        if (0 == position) {
-            return ITEM_TYPE_BANNER
+        return when {
+            position == 0 -> ITEM_TYPE_BANNER
+            mData[position + bannerItemSize - 1].type == "textHeader" ->
+                ITEM_TYPE_TEXT_HEADER
+            else ->
+                ITEM_TYPE_CONTENT
         }
-        return ITEM_TYPE_CONTENT
     }
 
     override fun getItemCount(): Int {
@@ -53,7 +67,7 @@ class HomeAdapter(mContext: Context, mData: List<HomeBean.Issue.Item>) : CommonA
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
             ITEM_TYPE_BANNER -> ViewHolder(inflaterView(R.layout.item_home_banner, parent))
-            ITEM_TYPE_CONTENT -> ViewHolder(inflaterView(R.layout.item_home_content, parent))
+            ITEM_TYPE_TEXT_HEADER -> ViewHolder(inflaterView(R.layout.item_home_header, parent))
             else -> ViewHolder(inflaterView(R.layout.item_home_content, parent))
         }
     }
@@ -73,23 +87,61 @@ class HomeAdapter(mContext: Context, mData: List<HomeBean.Issue.Item>) : CommonA
                         })
 
                 val banner = holder.getView<BGABanner>(R.id.banner)
-                banner.setAutoPlayAble(bannerItemSize > 1)
-                banner.setData(bannerFeedList, bannerTitleList)
-                /*banner.setAdapter(object : BGABanner.Adapter<ImageView, String> {
-                    override fun fillBannerItem(banner: BGABanner?, itemView: ImageView?, feedImageUrl: String?, position: Int) {
-                        Glide.with(mContext!!)
+                banner.run {
+                    setAutoPlayAble(bannerItemSize > 1)
+                    setData(bannerFeedList, bannerTitleList)
+                    setAdapter { _, _, feedImageUrl, pos ->
+                        GlideApp.with(mContext!!)
                                 .load(feedImageUrl)
-                                .into(itemView)
+                                .apply(RequestOptions().placeholder(R.drawable.default_avatar))
+                                .into(banner.getItemImageView(pos))
                     }
-
-                })*/
-                banner.setAdapter { _, _, feedImageUrl, pos ->
-                    GlideApp.with(mContext!!)
-                            .load(feedImageUrl)
-                            .into(banner.getItemImageView(pos))
                 }
             }
+
+            ITEM_TYPE_TEXT_HEADER -> holder.setText(R.id.tvHeader, mData[position + bannerItemSize - 1].data?.text!!)
+
+            ITEM_TYPE_CONTENT -> {
+                videoItem(holder, mData[position + bannerItemSize - 1])
+            }
         }
+    }
+
+    private fun videoItem(holder: ViewHolder, item: HomeBean.Issue.Item) {
+        val data = item.data
+        val feed = data?.cover?.feed
+        var avatar = data?.author?.icon
+        val defAvatar = R.drawable.default_avatar
+        var tagText: String? = "#"
+
+        // 作者出处为空，就显获取提供者的信息
+        if (avatar.isNullOrEmpty()) {
+            avatar = data?.provider?.icon
+        }
+        // 加载封页图
+        GlideApp.with(mContext!!).load(feed).into(holder.getView(R.id.iv_cover_feed))
+
+        if (avatar.isNullOrEmpty()) {
+            GlideApp.with(mContext!!).load(defAvatar).into(holder.getView(R.id.iv_avatar))
+        } else {
+            GlideApp.with(mContext!!).load(avatar).into(holder.getView(R.id.iv_avatar))
+        }
+
+        holder.setText(R.id.tv_title, data?.title!!)
+
+        //遍历标签
+        data.tags.take(4).forEach {
+            tagText += it.name + "/"
+        }
+
+        val duration = durationFormat(data.duration)
+
+        tagText += duration
+
+        holder.setText(R.id.tv_tag, tagText!!)
+
+        holder.setText(R.id.tv_category, "#" + data.category)
+
     }
 
     /**

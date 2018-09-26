@@ -3,7 +3,6 @@ package com.xufeng.mvpkotlin.ui.fragment
 import android.os.Bundle
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.base.BaseFragment
-import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.support.v4.toast
 
 /**
@@ -33,5 +32,5 @@ class MeituFragment : BaseFragment() {
         toast("meitu title" + mTitle)
     }
 
-    override fun getLayoutId(): Int = R.layout.content_main
+    override fun getLayoutId(): Int = R.layout.fragment_home
 }
