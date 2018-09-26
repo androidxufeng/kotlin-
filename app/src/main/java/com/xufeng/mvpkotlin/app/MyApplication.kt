@@ -6,15 +6,10 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.LogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.xufeng.mvpkotlin.BuildConfig
-import com.xufeng.mvpkotlin.R
+import com.xufeng.mvpkotlin.utils.DisplayManager
 import kotlin.properties.Delegates
 
 /**
@@ -34,32 +29,33 @@ class MyApplication : Application() {
         context = applicationContext
         registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks)
         initConfig()
+        DisplayManager.init(this)
     }
 
     init {
-       /* //static 代码段可以防止内存泄露
-        //设置全局的Header构建器
-        SmartRefreshLayout.setDefaultRefreshHeaderCreater { context, layout ->
-            //全局设置主题颜色
-            layout?.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white)
-            //指定为经典Header，默认是 贝塞尔雷达Header
-            ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate)
-        }
+        /* //static 代码段可以防止内存泄露
+         //设置全局的Header构建器
+         SmartRefreshLayout.setDefaultRefreshHeaderCreater { context, layout ->
+             //全局设置主题颜色
+             layout?.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white)
+             //指定为经典Header，默认是 贝塞尔雷达Header
+             ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate)
+         }
 
-        SmartRefreshLayout.setDefaultRefreshFooterCreater { context, _ ->
-            //指定为经典Footer，默认是 BallPulseFooter
-            ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Scale)
-        }*/
+         SmartRefreshLayout.setDefaultRefreshFooterCreater { context, _ ->
+             //指定为经典Footer，默认是 BallPulseFooter
+             ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Scale)
+         }*/
     }
 
-    private fun initConfig(){
+    private fun initConfig() {
         val formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)  // 隐藏线程信息 默认：显示
                 .methodCount(0)         // 决定打印多少行（每一行代表一个方法）默认：2
                 .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
                 .tag("xu_master")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
                 .build()
-        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy){
+        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
                 return BuildConfig.DEBUG
             }

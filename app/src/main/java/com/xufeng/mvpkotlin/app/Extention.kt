@@ -1,5 +1,6 @@
 package com.xufeng.mvpkotlin.app
 
+import android.content.Context
 import android.view.View
 
 /**
@@ -33,4 +34,20 @@ fun durationFormat(duration: Long?): String {
             "$minute' $second''"
         }
     }
+}
+
+/**
+ * 数据流量格式化
+ */
+fun Context.dataFormat(total: Long): String {
+    var result = ""
+    var speedReal = 0
+    speedReal = (total / (1024)).toInt()
+    if (speedReal < 512) {
+        result = speedReal.toString() + " KB"
+    } else {
+        val mSpeed = speedReal / 1024.0
+        result = (Math.round(mSpeed * 100) / 100.0).toString() + " MB"
+    }
+    return result
 }

@@ -1,5 +1,6 @@
 package com.xufeng.mvpkotlin.adapter
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
@@ -38,6 +39,7 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         return view as T
     }
 
+    @SuppressLint("SetTextI18n")
     fun setText(viewId: Int, text: CharSequence): ViewHolder {
         val textView: TextView = getView(viewId)
         textView.text = text

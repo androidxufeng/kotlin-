@@ -22,6 +22,7 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
 
     override fun requestHomeData(num: Int) {
 
+        checkViewAttached()
         mView?.showLoading()
 
         val disposable = mModel.requesetBannerData(num)

@@ -52,7 +52,6 @@ class MainActivity : BaseActivity() {
         tab_layout.setTabData(mTabEntities)
         tab_layout.setOnTabSelectListener(object : OnTabSelectListener {
             override fun onTabReselect(position: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onTabSelect(position: Int) {
@@ -136,5 +135,11 @@ class MainActivity : BaseActivity() {
     }
 
     override fun getLayoutId(): Int = R.layout.activity_main
+
+    override fun initData() {
+    }
+
+    override fun initView() {
+    }
 
 }

@@ -1,15 +1,18 @@
 package com.xufeng.mvpkotlin.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.bumptech.glide.request.RequestOptions
 import com.xufeng.mvpkotlin.R
+import com.xufeng.mvpkotlin.app.Constant
 import com.xufeng.mvpkotlin.app.durationFormat
 import com.xufeng.mvpkotlin.bean.HomeBean
 import com.xufeng.mvpkotlin.glide.GlideApp
+import com.xufeng.mvpkotlin.ui.activity.VideoDetailActivity
 import io.reactivex.Observable
 
 /**
@@ -77,8 +80,8 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
             ITEM_TYPE_BANNER -> {
                 var bannerListData: ArrayList<HomeBean.Issue.Item> = mData.take(bannerItemSize).toCollection(ArrayList())
 
-                var bannerFeedList: ArrayList<String> = ArrayList()
-                var bannerTitleList: ArrayList<String> = ArrayList()
+                var bannerFeedList = ArrayList<String>()
+                var bannerTitleList = ArrayList<String>()
 
                 Observable.fromIterable(bannerListData)
                         .subscribe({ list ->
@@ -142,6 +145,13 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
 
         holder.setText(R.id.tv_category, "#" + data.category)
 
+        holder.setOnItemClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                val intent = Intent(mContext, VideoDetailActivity::class.java)
+                intent.putExtra(Constant.BUNDLE_VIDEO_DATA, item)
+                mContext?.startActivity(intent)
+            }
+        })
     }
 
     /**

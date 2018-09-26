@@ -20,7 +20,9 @@ import java.util.*
  */
 class HomeFragment : BaseFragment(), HomeContract.View {
 
-    private lateinit var mPresenter: HomePresenter
+    private val mPresenter by lazy {
+        HomePresenter()
+    }
 
     private var mHomeAdapter: HomeAdapter? = null
 
@@ -107,7 +109,6 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     }
 
     override fun lazyLoad() {
-        mPresenter = HomePresenter()
         mPresenter.attachView(this)
         mPresenter.requestHomeData(1)
     }
