@@ -37,8 +37,7 @@ object RetrofitManager {
             val originRequest = chain.request()
             val modifierUrl = originRequest.url().newBuilder()
                     // Provide your custom parameter here
-                    .addQueryParameter("phoneSystem", "")
-                    .addQueryParameter("phoneModel", "")
+                    .addQueryParameter("udid", "d2807c895f0348a180148c9dfa6f2feeac0781b5")
                     .build()
             val request = originRequest.newBuilder().url(modifierUrl).build()
             chain.proceed(request)

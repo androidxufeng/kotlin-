@@ -1,5 +1,6 @@
 package com.xufeng.mvpkotlin.api
 
+import com.xufeng.mvpkotlin.bean.CategoryBean
 import com.xufeng.mvpkotlin.bean.HomeBean
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -25,14 +26,26 @@ interface ApiService {
     fun getMoreHomeData(@Url url: String): Observable<HomeBean>
 
     /**
-     * issue里面包了itemlist和nextpageurl
-     */
-    @GET
-    fun getIssue(@Url url: String): Observable<HomeBean.Issue>
-
-    /**
      * 根据item id获取相关视频
      */
     @GET("v4/video/related?")
     fun getRelatedData(@Query("id") id: Long): Observable<HomeBean.Issue>
+
+    /**
+     * 获取分类
+     */
+    @GET("v4/categories")
+    fun getCategory(): Observable<ArrayList<CategoryBean>>
+
+    /**
+     * 获取分类详情List
+     */
+    @GET("v4/categories/videoList?")
+    fun getCategoryDetailList(@Query("id") id: Long): Observable<HomeBean.Issue>
+    /**
+     * 获取更多的 Issue
+     */
+    @GET
+    fun getIssueData(@Url url: String): Observable<HomeBean.Issue>
+
 }
