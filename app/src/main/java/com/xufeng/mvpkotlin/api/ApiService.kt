@@ -2,6 +2,7 @@ package com.xufeng.mvpkotlin.api
 
 import com.xufeng.mvpkotlin.bean.CategoryBean
 import com.xufeng.mvpkotlin.bean.HomeBean
+import com.xufeng.mvpkotlin.bean.TabInfoBean
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -42,10 +43,17 @@ interface ApiService {
      */
     @GET("v4/categories/videoList?")
     fun getCategoryDetailList(@Query("id") id: Long): Observable<HomeBean.Issue>
+
     /**
      * 获取更多的 Issue
      */
     @GET
     fun getIssueData(@Url url: String): Observable<HomeBean.Issue>
+
+    /**
+     * 获取全部排行榜的Info（包括，title 和 Url）
+     */
+    @GET("v4/rankList")
+    fun getRankList(): Observable<TabInfoBean>
 
 }

@@ -17,14 +17,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/mTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@color/color_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_header_title"
+        app:tabIndicatorColor="#000"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="#000"
+        app:tabTextColor="#5000" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_below="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_header_title" />
+        app:layout_constraintTop_toBottomOf="@id/mTabLayout" />
 
 </android.support.constraint.ConstraintLayout>

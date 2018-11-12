@@ -13,7 +13,7 @@ import com.xufeng.mvpkotlin.bean.CategoryBean
 import com.xufeng.mvpkotlin.ui.contract.CategoryContract
 import com.xufeng.mvpkotlin.ui.presenter.CategoryPresenter
 import com.xufeng.mvpkotlin.utils.DisplayManager
-import kotlinx.android.synthetic.main.fragment_category.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file

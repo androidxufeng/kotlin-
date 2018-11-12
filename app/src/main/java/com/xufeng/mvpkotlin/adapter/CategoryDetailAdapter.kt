@@ -20,7 +20,7 @@ import com.xufeng.mvpkotlin.ui.activity.VideoDetailActivity
 class CategoryDetailAdapter(context: Context, dataList: ArrayList<HomeBean.Issue.Item>, layoutId: Int)
     : CommonAdapter<HomeBean.Issue.Item>(context, dataList, layoutId) {
 
-    fun addData(dataList: ArrayList<HomeBean.Issue.Item>) {
+    fun addData(dataList: List<HomeBean.Issue.Item>) {
         this.mData.addAll(dataList)
         notifyDataSetChanged()
     }
