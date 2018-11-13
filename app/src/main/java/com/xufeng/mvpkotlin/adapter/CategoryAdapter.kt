@@ -7,13 +7,11 @@ import android.graphics.Typeface
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.request.RequestOptions
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.app.Constant
 import com.xufeng.mvpkotlin.app.MyApplication
 import com.xufeng.mvpkotlin.bean.CategoryBean
 import com.xufeng.mvpkotlin.glide.GlideApp
-import com.xufeng.mvpkotlin.glide.GlideRoundTransform
 import com.xufeng.mvpkotlin.ui.activity.CategoryDetailActivity
 
 
@@ -39,8 +37,7 @@ class CategoryAdapter(context: Context, categoryList: ArrayList<CategoryBean>, l
             override fun loadImage(iv: ImageView, path: String) {
                 GlideApp.with(MyApplication.context)
                         .load(path)
-                        .apply(RequestOptions().placeholder(R.color.color_darker_gray)
-                                .optionalTransform(GlideRoundTransform()))
+                        .placeholder(R.color.color_darker_gray)
                         .into(iv)
             }
         })

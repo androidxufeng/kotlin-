@@ -50,7 +50,7 @@ class CategoryDetailActivity : BaseActivity() ,CategoryDetailContract.View{
         // 加载headerImage
         GlideApp.with(this)
                 .load(mCateGroyData?.headerImage)
-                .apply(RequestOptions().placeholder(R.color.color_darker_gray))
+                .placeholder(R.color.color_darker_gray)
                 .into(imageView)
         tv_category_desc.text ="#${mCateGroyData?.description}#"
 

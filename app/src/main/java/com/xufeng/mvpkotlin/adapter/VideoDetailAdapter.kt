@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.bumptech.glide.request.RequestOptions
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.app.MyApplication
 import com.xufeng.mvpkotlin.app.durationFormat
@@ -79,8 +78,7 @@ class VideoDetailAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>)
                     override fun loadImage(iv: ImageView, path: String) {
                         GlideApp.with(MyApplication.context)
                                 .load(path)
-                                .apply(RequestOptions().placeholder(R.color.color_darker_gray)
-                                        .optionalTransform(GlideRoundTransform()))
+                                .optionalTransform(GlideRoundTransform())
                                 .into(iv)
                     }
                 })
@@ -95,17 +93,17 @@ class VideoDetailAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>)
         data.data?.title?.let {
             holder.setText(R.id.tv_title, it)
         }
-       with(holder){
-           getView<ExpandableTextView>(R.id.expand_text_view).text = data.data?.description
-           //标签
-           setText(R.id.tv_tag, "#${data.data?.category} / ${durationFormat(data.data?.duration)}")
-           //喜欢
-           setText(R.id.tv_action_favorites, data.data?.consumption?.collectionCount.toString())
-           //分享
-           setText(R.id.tv_action_share, data.data?.consumption?.shareCount.toString())
-           //评论
-           setText(R.id.tv_action_reply, data.data?.consumption?.replyCount.toString())
-       }
+        with(holder) {
+            getView<ExpandableTextView>(R.id.expand_text_view).text = data.data?.description
+            //标签
+            setText(R.id.tv_tag, "#${data.data?.category} / ${durationFormat(data.data?.duration)}")
+            //喜欢
+            setText(R.id.tv_action_favorites, data.data?.consumption?.collectionCount.toString())
+            //分享
+            setText(R.id.tv_action_share, data.data?.consumption?.shareCount.toString())
+            //评论
+            setText(R.id.tv_action_reply, data.data?.consumption?.replyCount.toString())
+        }
 
         if (data.data?.author != null) {
             holder.setText(R.id.tv_author_name, data.data.author.name)
@@ -115,7 +113,7 @@ class VideoDetailAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>)
                     //加载头像
                     GlideApp.with(MyApplication.context)
                             .load(path)
-                            .apply(RequestOptions().placeholder(R.drawable.default_avatar).circleCrop())
+                            .placeholder(R.drawable.default_avatar).circleCrop()
                             .into(iv)
                 }
             })

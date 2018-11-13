@@ -56,4 +56,16 @@ interface ApiService {
     @GET("v4/rankList")
     fun getRankList(): Observable<TabInfoBean>
 
+    /**
+     * 获取搜索信息
+     */
+    @GET("v1/search?&num=10&start=10")
+    fun getSearchData(@Query("query") query: String): Observable<HomeBean.Issue>
+
+    /**
+     * 热门搜索词
+     */
+    @GET("v3/queries/hot")
+    fun getHotWord(): Observable<ArrayList<String>>
+
 }

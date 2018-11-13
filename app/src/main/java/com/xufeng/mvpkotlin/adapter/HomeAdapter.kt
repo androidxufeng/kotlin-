@@ -5,13 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
-import android.util.Log
+import android.support.v4.util.Pair
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.support.v4.util.Pair
 import cn.bingoogolapple.bgabanner.BGABanner
-import com.bumptech.glide.request.RequestOptions
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.app.Constant
 import com.xufeng.mvpkotlin.app.durationFormat
@@ -62,7 +60,6 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
             mData.isEmpty() -> 0
             else -> 1
         }
-        Log.d("ceshi", "count = $count")
         return count
     }
 
@@ -83,10 +80,10 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
                 val bannerTitleList = ArrayList<String>()
 
                 Observable.fromIterable(bannerListData)
-                        .subscribe({ list ->
+                        .subscribe{ list ->
                             bannerTitleList.add(list.data!!.title)
                             bannerFeedList.add(list.data.cover.feed)
-                        })
+                        }
 
                 val banner = holder.getView<BGABanner>(R.id.banner)
                 banner.run {
@@ -95,7 +92,7 @@ class HomeAdapter(context: Context, data: ArrayList<HomeBean.Issue.Item>) : Comm
                     setAdapter { _, _, feedImageUrl, pos ->
                         GlideApp.with(mContext!!)
                                 .load(feedImageUrl)
-                                .apply(RequestOptions().placeholder(R.drawable.default_avatar))
+                                .placeholder(R.drawable.default_avatar)
                                 .into(banner.getItemImageView(pos))
                     }
                 }

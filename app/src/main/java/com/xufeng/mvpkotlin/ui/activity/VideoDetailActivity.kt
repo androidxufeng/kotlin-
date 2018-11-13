@@ -7,7 +7,6 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.Transition
 import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.RequestOptions
 import com.orhanobut.logger.Logger
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
@@ -146,9 +145,9 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
     }
 
     override fun setBackground(url: String) {
-        GlideApp.with(this).load(url).apply(RequestOptions()
+        GlideApp.with(this).load(url)
                 .format(DecodeFormat.PREFER_ARGB_8888)
-                .centerCrop())
+                .centerCrop()
                 .into(mVideoBackground)
     }
 

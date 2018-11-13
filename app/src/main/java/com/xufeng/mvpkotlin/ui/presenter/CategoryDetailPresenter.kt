@@ -1,6 +1,5 @@
 package com.xufeng.mvpkotlin.ui.presenter
 
-import com.orhanobut.logger.Logger
 import com.xufeng.mvpkotlin.base.BasePresenter
 import com.xufeng.mvpkotlin.model.CategoryDetailModel
 import com.xufeng.mvpkotlin.rx.scheduler.SchedulerUtils
@@ -11,7 +10,7 @@ import com.xufeng.mvpkotlin.ui.contract.CategoryDetailContract
  */
 class CategoryDetailPresenter : BasePresenter<CategoryDetailContract.View>(), CategoryDetailContract.Presenter {
 
-    private var nextPageUrl = ""
+    private var nextPageUrl: String? = null
 
 
     override fun getCategoryDetailList(id: Long) {
@@ -40,22 +39,23 @@ class CategoryDetailPresenter : BasePresenter<CategoryDetailContract.View>(), Ca
     }
 
     override fun loadMoreData() {
-        mView?.showLoading()
+        val disposable = nextPageUrl?.let {
+            mCategoryDetailModel.loadMoreData(it)
+                    .compose(SchedulerUtils.ioToMain())
+                    .subscribe({ issue ->
+                        mView?.apply {
+                            nextPageUrl = issue.nextPageUrl
+                            showCategoryDetail(issue.itemList)
+                        }
+                    }, { throwable ->
+                        mView?.apply {
+                            showError(throwable.toString())
+                        }
+                    })
+        }
 
-        val disposable = mCategoryDetailModel.loadMoreData(nextPageUrl)
-                .compose(SchedulerUtils.ioToMain())
-                .subscribe({ issue ->
-                    mView?.apply {
-                        dismissLoading()
-                        nextPageUrl = issue.nextPageUrl
-                        showCategoryDetail(issue.itemList)
-                    }
-                }, { t ->
-                    mView?.apply {
-                        dismissLoading()
-                        showError(t.toString())
-                    }
-                })
-        addSubscription(disposable)
+        disposable?.let {
+            addSubscription(it)
+        }
     }
 }
