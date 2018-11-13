@@ -3,8 +3,6 @@ package com.xufeng.mvpkotlin.ui.activity
 import android.annotation.TargetApi
 import android.graphics.Typeface
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.transition.Fade
@@ -131,6 +129,7 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     }
 
     override fun setEmptyView() {
+        toast("抱歉，没有找到相匹配的内容")
     }
 
     override fun showError(errorMsg: String) {
@@ -144,12 +143,12 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     }
 
     private fun setUpView() {
-        Handler(Looper.getMainLooper()).post {
-            val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
-            animation.duration = 300
-            rel_container.startAnimation(animation)
-            rel_container.visibility = View.VISIBLE
-        }
+        val animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+        animation.duration = 300
+        rel_container.startAnimation(animation)
+        rel_container.visibility = View.VISIBLE
+        //打开软键盘
+        openKeyBoard(et_search_view, applicationContext)
     }
 
     /**
@@ -197,7 +196,7 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     private fun animateRevealShow() {
         ViewAnimUtils.animateRevealShow(
                 this, rel_frame,
-                fab_circle.width / 2, R.color.color_gray,
+                fab_circle.width / 2, R.color.backgroundColor,
                 object : ViewAnimUtils.OnRevealAnimationListener {
                     override fun onRevealHide() {
                     }
@@ -213,7 +212,7 @@ class SearchActivity : BaseActivity(), SearchContract.View {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ViewAnimUtils.animateRevealHide(
                     this, rel_frame,
-                    fab_circle.width / 2, R.color.color_gray,
+                    fab_circle.width / 2, R.color.backgroundColor,
                     object : ViewAnimUtils.OnRevealAnimationListener {
                         override fun onRevealHide() {
                             defaultBackPressed()
@@ -229,8 +228,8 @@ class SearchActivity : BaseActivity(), SearchContract.View {
 
     // 默认回退
     private fun defaultBackPressed() {
+        closeKeyBoard(et_search_view, applicationContext)
         super.onBackPressed()
     }
-
 
 }

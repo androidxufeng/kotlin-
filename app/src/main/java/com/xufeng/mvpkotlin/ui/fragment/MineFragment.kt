@@ -8,15 +8,15 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file
  */
-class MeituFragment : BaseFragment() {
+class MineFragment : BaseFragment() {
     private var mTitle: String? = null
 
     /**
      * 伴生对象
      */
     companion object {
-        fun getInstance(title: String): MeituFragment {
-            val fragment = MeituFragment()
+        fun getInstance(title: String): MineFragment {
+            val fragment = MineFragment()
             val bundle = Bundle()
             fragment.arguments = bundle
             fragment.mTitle = title
@@ -29,8 +29,7 @@ class MeituFragment : BaseFragment() {
     }
 
     override fun lazyLoad() {
-        toast("meitu title" + mTitle)
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_home
+    override fun getLayoutId(): Int = R.layout.fragment_mine
 }

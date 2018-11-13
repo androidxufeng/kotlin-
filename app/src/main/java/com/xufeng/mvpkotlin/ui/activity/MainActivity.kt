@@ -11,7 +11,7 @@ import com.xufeng.mvpkotlin.bean.TabEntity
 import com.xufeng.mvpkotlin.ui.fragment.CategoryFragment
 import com.xufeng.mvpkotlin.ui.fragment.HomeFragment
 import com.xufeng.mvpkotlin.ui.fragment.HotFragment
-import com.xufeng.mvpkotlin.ui.fragment.MeituFragment
+import com.xufeng.mvpkotlin.ui.fragment.MineFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
@@ -31,7 +31,7 @@ class MainActivity : BaseActivity() {
     private var mHomeFragment: HomeFragment? = null
     private var mCategoryFragment: CategoryFragment? = null
     private var mHotFragment: HotFragment? = null
-    private var mMeiTuFragment: MeituFragment? = null
+    private var mMeiTuFragment: MineFragment? = null
 
     //默认为0
     private var mIndex = 0
@@ -97,7 +97,7 @@ class MainActivity : BaseActivity() {
             }
             3 //更多
             -> if (mMeiTuFragment == null) {
-                mMeiTuFragment = MeituFragment.getInstance(mTitles[position])
+                mMeiTuFragment = MineFragment.getInstance(mTitles[position])
                 transaction.add(R.id.fl_container, mMeiTuFragment, "mei")
             } else {
                 transaction.show(mMeiTuFragment)
