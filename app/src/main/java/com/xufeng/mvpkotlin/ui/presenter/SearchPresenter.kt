@@ -13,6 +13,7 @@
 package com.xufeng.mvpkotlin.ui.presenter
 
 import com.xufeng.mvpkotlin.base.BasePresenter
+import com.xufeng.mvpkotlin.http.exception.ExceptionHandle
 import com.xufeng.mvpkotlin.model.SearchModel
 import com.xufeng.mvpkotlin.rx.scheduler.SchedulerUtils
 import com.xufeng.mvpkotlin.ui.contract.SearchContract
@@ -29,6 +30,10 @@ class SearchPresenter : BasePresenter<SearchContract.View>(), SearchContract.Pre
 
     override fun requestHotWordData() {
         checkViewAttached()
+        mView?.apply {
+            closeSoftKeyboard()
+            showLoading()
+        }
         addSubscription(disposable = mModel.requestHotWordData()
                 .compose(SchedulerUtils.ioToMain())
                 .subscribe({ strings ->
@@ -37,7 +42,7 @@ class SearchPresenter : BasePresenter<SearchContract.View>(), SearchContract.Pre
                     }
                 }, { throwable ->
                     mView?.apply {
-                        showError(throwable.toString())
+                        showError(ExceptionHandle.handleException(throwable), ExceptionHandle.errorCode)
                     }
 
                 }))
@@ -45,7 +50,10 @@ class SearchPresenter : BasePresenter<SearchContract.View>(), SearchContract.Pre
 
     override fun querySearchData(words: String) {
         checkViewAttached()
-        mView?.showLoading()
+        mView?.apply {
+            closeSoftKeyboard()
+            showLoading()
+        }
         addSubscription(
                 disposable = mModel.getSearchResult(words)
                         .compose(SchedulerUtils.ioToMain())
@@ -61,7 +69,7 @@ class SearchPresenter : BasePresenter<SearchContract.View>(), SearchContract.Pre
                                 }, { throwable ->
                             mView?.apply {
                                 dismissLoading()
-                                showError(throwable.toString())
+                                showError(ExceptionHandle.handleException(throwable), ExceptionHandle.errorCode)
                             }
                         }
                         )
@@ -80,7 +88,7 @@ class SearchPresenter : BasePresenter<SearchContract.View>(), SearchContract.Pre
                         }
                     }, { throwable ->
                         mView?.apply {
-                            showError(throwable.toString())
+                            showError(ExceptionHandle.handleException(throwable), ExceptionHandle.errorCode)
                         }
                     }))
         }

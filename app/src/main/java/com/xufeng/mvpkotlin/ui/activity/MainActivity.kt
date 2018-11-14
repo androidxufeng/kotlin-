@@ -58,7 +58,6 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onTabSelect(position: Int) {
-                toast("-----" + position)
                 //切换Fragment
                 switchFragment(position)
             }
@@ -156,6 +155,10 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
+    }
+
+    override fun start() {
+
     }
 
 }

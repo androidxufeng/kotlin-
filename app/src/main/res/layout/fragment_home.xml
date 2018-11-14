@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/backgroundColor">
-
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/mRefreshLayout"
@@ -21,16 +20,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/mRecyclerView"
+            <com.xufeng.multiplestatusview.MultipleStatusView
+                android:id="@+id/multipleStatusView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                app:emptyView="@layout/layout_empty_view"
+                app:errorView="@layout/layout_error_view"
+                app:loadingView="@layout/layout_loading_view"
+                app:noNetworkView="@layout/layout_network_view">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.xufeng.multiplestatusview.MultipleStatusView>
 
             <RelativeLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/color_title_bg">
+                android:layout_height="?attr/actionBarSize">
 
                 <TextView
                     android:id="@+id/tv_header_title"
@@ -44,19 +53,17 @@
 
                 <ImageView
                     android:id="@+id/iv_search"
-                    tools:src="@drawable/ic_action_search_black"
-                    tools:targetApi="lollipop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
-                    android:transitionName="@string/search_transition_name" />
+                    android:transitionName="@string/search_transition_name"
+                    tools:src="@drawable/ic_action_search_black"
+                    tools:targetApi="lollipop" />
             </RelativeLayout>
-
         </FrameLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
 
 </RelativeLayout>

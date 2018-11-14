@@ -13,6 +13,7 @@
 package com.xufeng.mvpkotlin.ui.presenter
 
 import com.xufeng.mvpkotlin.base.BasePresenter
+import com.xufeng.mvpkotlin.http.exception.ExceptionHandle
 import com.xufeng.mvpkotlin.model.RankModel
 import com.xufeng.mvpkotlin.rx.scheduler.SchedulerUtils
 import com.xufeng.mvpkotlin.ui.contract.RankContract
@@ -37,7 +38,7 @@ class RankPresenter : BasePresenter<RankContract.View>(), RankContract.Presenter
                 }, { throwable ->
                     mView?.apply {
                         dismissLoading()
-                        showError(throwable.toString())
+                        showError(ExceptionHandle.handleException(throwable), ExceptionHandle.errorCode)
                     }
                 })
 

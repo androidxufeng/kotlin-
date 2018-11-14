@@ -2,6 +2,7 @@ package com.xufeng.mvpkotlin.ui.presenter
 
 import com.xufeng.mvpkotlin.base.BasePresenter
 import com.xufeng.mvpkotlin.bean.HomeBean
+import com.xufeng.mvpkotlin.http.exception.ExceptionHandle
 import com.xufeng.mvpkotlin.model.HomeModel
 import com.xufeng.mvpkotlin.rx.scheduler.SchedulerUtils
 import com.xufeng.mvpkotlin.ui.contract.HomeContract
@@ -62,7 +63,7 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
                 }, { t ->
                     mView?.apply {
                         dismissLoading()
-                        showError(t.toString())
+                        showError(ExceptionHandle.handleException(t), ExceptionHandle.errorCode)
                     }
                 }
                 )
@@ -70,12 +71,10 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
     }
 
     override fun loadMoreData() {
-        mView?.showLoading()
         val disposable = mModel.loadMoreData(mNextPageUrl!!)
                 .compose(SchedulerUtils.ioToMain())
                 .subscribe({ homeBean: HomeBean ->
                     mView?.apply {
-                        dismissLoading()
                         //过滤掉 Banner2(包含广告,等无用的 Type), 具体查看接口分析
                         val newItemList = homeBean.issueList[0].itemList
                         newItemList.filter { item ->
@@ -89,8 +88,7 @@ class HomePresenter : BasePresenter<HomeContract.View>(), HomeContract.Presenter
                     }
                 }, { t ->
                     mView?.apply {
-                        dismissLoading()
-                        showError(t.toString())
+                        showError(ExceptionHandle.handleException(t), ExceptionHandle.errorCode)
                     }
                 })
         addSubscription(disposable)

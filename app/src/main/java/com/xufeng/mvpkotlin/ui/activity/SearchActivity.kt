@@ -20,6 +20,7 @@ import com.xufeng.mvpkotlin.adapter.HotKeywordsAdapter
 import com.xufeng.mvpkotlin.app.MyApplication
 import com.xufeng.mvpkotlin.base.BaseActivity
 import com.xufeng.mvpkotlin.bean.HomeBean
+import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.contract.SearchContract
 import com.xufeng.mvpkotlin.ui.presenter.SearchPresenter
 import com.xufeng.mvpkotlin.utils.ViewAnimUtils
@@ -96,14 +97,17 @@ class SearchActivity : BaseActivity(), SearchContract.View {
                 return false
             }
         })
+        mLayoutStatusView = multipleStatusView
+    }
 
-        //请求热门关键词
+    override fun start() {
         mPresenter.requestHotWordData()
     }
 
     override fun getLayoutId(): Int = R.layout.activity_search
 
     override fun setHotWordData(string: ArrayList<String>) {
+        showHotWordView()
         mHotKeywordsAdapter = HotKeywordsAdapter(this, string, R.layout.item_flow_text)
         val flexBoxLayoutManager = FlexboxLayoutManager(this)
         flexBoxLayoutManager.flexWrap = FlexWrap.WRAP      //按正常方向换行
@@ -121,8 +125,8 @@ class SearchActivity : BaseActivity(), SearchContract.View {
 
     override fun setSearchResult(issue: HomeBean.Issue) {
         mLoadingMore = false
-        layout_hot_words.visibility = View.GONE
-        layout_content_result.visibility = View.VISIBLE
+        hideHotWordView()
+        tv_search_count.visibility = View.VISIBLE
         tv_search_count.text = String.format(resources.getString(R.string.search_result_count), mKeyWords, issue.total)
         mList = issue.itemList
         mAdapter.addData(issue.itemList)
@@ -130,16 +134,26 @@ class SearchActivity : BaseActivity(), SearchContract.View {
 
     override fun setEmptyView() {
         toast("抱歉，没有找到相匹配的内容")
+        hideHotWordView()
+        tv_search_count.visibility = View.GONE
+        mLayoutStatusView?.showEmpty()
     }
 
-    override fun showError(errorMsg: String) {
+    override fun showError(errorMsg: String, errorCode: Int) {
+        toast(errorMsg)
+        if (errorCode == ErrorStatus.NETWORK_ERROR) {
+            mLayoutStatusView?.showNoNetwork()
+        } else {
+            mLayoutStatusView?.showError()
+        }
     }
 
     override fun showLoading() {
-        toast("查询中...")
+        mLayoutStatusView?.showLoading()
     }
 
     override fun dismissLoading() {
+        mLayoutStatusView?.showContent()
     }
 
     private fun setUpView() {
@@ -230,6 +244,31 @@ class SearchActivity : BaseActivity(), SearchContract.View {
     private fun defaultBackPressed() {
         closeKeyBoard(et_search_view, applicationContext)
         super.onBackPressed()
+    }
+
+    override fun closeSoftKeyboard() {
+        closeKeyBoard(et_search_view, applicationContext)
+    }
+
+    /**
+     * 隐藏热门关键字的 View
+     */
+    private fun hideHotWordView() {
+        layout_hot_words.visibility = View.GONE
+        layout_content_result.visibility = View.VISIBLE
+    }
+
+    /**
+     * 显示热门关键字的 流式布局
+     */
+    private fun showHotWordView() {
+        layout_hot_words.visibility = View.VISIBLE
+        layout_content_result.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.detachView()
     }
 
 }

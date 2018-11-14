@@ -34,7 +34,12 @@ interface SearchContract {
          */
         fun setEmptyView()
 
-        fun showError(errorMsg: String)
+        fun showError(errorMsg: String, errorCode: Int)
+
+        /**
+         * 关闭软件盘
+         */
+        fun closeSoftKeyboard()
     }
 
     interface Presenter : IPresenter<View> {

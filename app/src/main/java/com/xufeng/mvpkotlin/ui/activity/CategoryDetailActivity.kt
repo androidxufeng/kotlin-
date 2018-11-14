@@ -72,6 +72,9 @@ class CategoryDetailActivity : BaseActivity() ,CategoryDetailContract.View{
                 }
             }
         })
+    }
+
+    override fun start() {
         //获取当前分类列表
         mPresenter.getCategoryDetailList(mCateGroyData?.id!!)
     }
@@ -79,11 +82,11 @@ class CategoryDetailActivity : BaseActivity() ,CategoryDetailContract.View{
     override fun getLayoutId(): Int = R.layout.activity_category_detail
 
     override fun showLoading() {
-       Logger.d("CategoryDetailActivity 加载中")
+       multipleStatusView.showLoading()
     }
 
     override fun dismissLoading() {
-        Logger.d("CategoryDetailActivity 加载完成")
+        multipleStatusView.showContent()
     }
 
     override fun showCategoryDetail(itemList: ArrayList<HomeBean.Issue.Item>) {
@@ -92,7 +95,7 @@ class CategoryDetailActivity : BaseActivity() ,CategoryDetailContract.View{
     }
 
     override fun showError(errorMsg: String) {
-        Logger.e("CategoryDetailActivity 加载失败 =  $errorMsg")
+        multipleStatusView.showError()
     }
 
     override fun onDestroy() {

@@ -72,4 +72,9 @@ class HotFragment : BaseFragment(), HotTabContract.View {
 
     override fun showError(msg: String) {
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.detachView()
+    }
 }

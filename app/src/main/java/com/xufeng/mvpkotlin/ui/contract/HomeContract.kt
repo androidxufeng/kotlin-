@@ -11,7 +11,7 @@ interface HomeContract {
 
     interface View : IBaseView {
 
-        fun showError(msg: String)
+        fun showError(msg: String, errorCode: Int)
 
         fun showHomeData(data: HomeBean)
 

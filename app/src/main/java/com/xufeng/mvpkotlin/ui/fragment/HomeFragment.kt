@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat.getColor
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.orhanobut.logger.Logger
@@ -13,10 +12,12 @@ import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.adapter.HomeAdapter
 import com.xufeng.mvpkotlin.base.BaseFragment
 import com.xufeng.mvpkotlin.bean.HomeBean
+import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.activity.SearchActivity
 import com.xufeng.mvpkotlin.ui.contract.HomeContract
 import com.xufeng.mvpkotlin.ui.presenter.HomePresenter
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.support.v4.toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,19 +38,31 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
     private var mNum = 1
 
+    private var isRefresh = false
+
     private val mSimpleDateFormat by lazy {
         SimpleDateFormat("- MMM. dd, 'Brunch' -", Locale.ENGLISH)
     }
 
     override fun showLoading() {
+        if (!isRefresh){
+            isRefresh = false
+            mLayoutStatusView?.showLoading()
+        }
     }
 
     override fun dismissLoading() {
         mRefreshLayout.finishRefresh()
+        mLayoutStatusView?.showContent()
     }
 
-    override fun showError(msg: String) {
-        Logger.e(msg)
+    override fun showError(msg: String, errorCode: Int) {
+        toast(msg)
+        if (errorCode == ErrorStatus.NETWORK_ERROR) {
+            mLayoutStatusView?.showNoNetwork()
+        } else {
+            mLayoutStatusView?.showError()
+        }
     }
 
     override fun setMoreData(itemList: ArrayList<HomeBean.Issue.Item>) {
@@ -72,7 +85,10 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     override fun initView() {
         mPresenter.attachView(this)
 
-        mRefreshLayout.setOnRefreshListener { mPresenter.requestHomeData(mNum) }
+        mRefreshLayout.setOnRefreshListener {
+            isRefresh = true
+            mPresenter.requestHomeData(mNum)
+        }
 
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -115,6 +131,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         })
 
         iv_search.setOnClickListener { openSearchActivity() }
+        mLayoutStatusView = multipleStatusView
     }
 
     private fun openSearchActivity() {
@@ -149,7 +166,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         mPresenter.detachView()
     }
 
-    fun getColor(colorId: Int):Int{
+    fun getColor(colorId: Int): Int {
         return resources.getColor(colorId)
     }
 

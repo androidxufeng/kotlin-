@@ -5,15 +5,16 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.orhanobut.logger.Logger
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.adapter.CategoryAdapter
 import com.xufeng.mvpkotlin.base.BaseFragment
 import com.xufeng.mvpkotlin.bean.CategoryBean
+import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.contract.CategoryContract
 import com.xufeng.mvpkotlin.ui.presenter.CategoryPresenter
 import com.xufeng.mvpkotlin.utils.DisplayManager
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.support.v4.toast
 
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file
@@ -31,19 +32,24 @@ class CategoryFragment : BaseFragment(), CategoryContract.View {
     private var mCategoryList = ArrayList<CategoryBean>()
 
     override fun showLoading() {
-
+        mLayoutStatusView?.showLoading()
     }
 
     override fun dismissLoading() {
-
+        mLayoutStatusView?.showContent()
     }
 
     override fun showCategory(categoryList: ArrayList<CategoryBean>) {
         mAdapter.setData(categoryList)
     }
 
-    override fun showError(errorMsg: String) {
-        Logger.d(errorMsg)
+    override fun showError(errorMsg: String, errorCode: Int) {
+        toast(errorMsg)
+        if (errorCode == ErrorStatus.NETWORK_ERROR) {
+            mLayoutStatusView?.showNoNetwork()
+        } else {
+            mLayoutStatusView?.showError()
+        }
     }
 
     private var mTitle: String? = null
@@ -63,6 +69,7 @@ class CategoryFragment : BaseFragment(), CategoryContract.View {
 
     override fun initView() {
         mPresenter.attachView(this)
+        mLayoutStatusView = multipleStatusView
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = GridLayoutManager(context, 2)
         mRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {

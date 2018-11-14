@@ -10,10 +10,10 @@
         android:id="@+id/fl_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.flyco.tablayout.CommonTabLayout
         android:id="@+id/tab_layout"
@@ -24,13 +24,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fl_container"
+        app:tl_divider_color="@android:color/black"
         app:tl_iconHeight="23dp"
         app:tl_iconWidth="23dp"
         app:tl_indicator_color="@color/colorPrimary"
         app:tl_indicator_height="0dp"
         app:tl_textSelectColor="@color/colorAccent"
         app:tl_textUnselectColor="#66000000"
-        app:tl_textsize="12sp"
+        app:tl_textsize="10sp"
         app:tl_underline_color="#DDDDDD"
         app:tl_underline_height="1dp" />
 

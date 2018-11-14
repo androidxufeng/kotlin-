@@ -1,6 +1,7 @@
 package com.xufeng.mvpkotlin.ui.presenter
 
 import com.xufeng.mvpkotlin.base.BasePresenter
+import com.xufeng.mvpkotlin.http.exception.ExceptionHandle
 import com.xufeng.mvpkotlin.model.CategoryModel
 import com.xufeng.mvpkotlin.rx.scheduler.SchedulerUtils
 import com.xufeng.mvpkotlin.ui.contract.CategoryContract
@@ -28,7 +29,7 @@ class CategoryPresenter : BasePresenter<CategoryContract.View>(), CategoryContra
                 }, { t ->
                     mView?.apply {
                         dismissLoading()
-                        showError(t.message.toString())
+                        showError(ExceptionHandle.handleException(t), ExceptionHandle.errorCode)
                     }
                 })
         addSubscription(disposable)

@@ -122,6 +122,10 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
         }
     }
 
+    override fun start() {
+        loadVideoInfo()
+    }
+
     override fun showLoading() {
     }
 
@@ -191,6 +195,7 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
         super.onDestroy()
         GSYVideoPlayer.releaseAllVideos()
         orientationUtils?.releaseListener()
+        mPresenter.detachView()
     }
 
     private fun getCurPlay(): GSYVideoPlayer {

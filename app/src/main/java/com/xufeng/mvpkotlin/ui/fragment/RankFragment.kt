@@ -18,9 +18,11 @@ import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.adapter.CategoryDetailAdapter
 import com.xufeng.mvpkotlin.base.BaseFragment
 import com.xufeng.mvpkotlin.bean.HomeBean
+import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.contract.RankContract
 import com.xufeng.mvpkotlin.ui.presenter.RankPresenter
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.jetbrains.anko.support.v4.toast
 
 class RankFragment : BaseFragment(), RankContract.View {
 
@@ -61,9 +63,16 @@ class RankFragment : BaseFragment(), RankContract.View {
     override fun initView() {
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
         mRecyclerView.adapter = mAdapter
+        mLayoutStatusView = multipleStatusView
     }
 
-    override fun showError(msg: String) {
+    override fun showError(errorMsg: String, errorCode: Int) {
+        toast(errorMsg)
+        if (errorCode == ErrorStatus.NETWORK_ERROR) {
+            mLayoutStatusView?.showNoNetwork()
+        } else {
+            mLayoutStatusView?.showError()
+        }
     }
 
     override fun setRankList(itemList: List<HomeBean.Issue.Item>) {
@@ -71,8 +80,15 @@ class RankFragment : BaseFragment(), RankContract.View {
     }
 
     override fun showLoading() {
+        mLayoutStatusView?.showLoading()
     }
 
     override fun dismissLoading() {
+        mLayoutStatusView?.showContent()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresent.detachView()
     }
 }

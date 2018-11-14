@@ -10,7 +10,7 @@ import com.xufeng.mvpkotlin.bean.HomeBean
 interface RankContract {
 
     interface View : IBaseView {
-        fun showError(msg: String)
+        fun showError(msg: String, errorCode: Int)
 
         fun setRankList(itemList: List<HomeBean.Issue.Item>)
     }
