@@ -8,6 +8,7 @@ import com.xufeng.mvpkotlin.base.BaseFragmentAdapter
 import com.xufeng.mvpkotlin.bean.TabInfoBean
 import com.xufeng.mvpkotlin.ui.contract.HotTabContract
 import com.xufeng.mvpkotlin.ui.presenter.HotTabPresenter
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
 import kotlinx.android.synthetic.main.fragment_hot.*
 
 /**
@@ -43,6 +44,10 @@ class HotFragment : BaseFragment(), HotTabContract.View {
     }
 
     override fun initView() {
+
+        //状态栏透明和间距处理
+        StatusBarUtils.darkMode(activity!!)
+        StatusBarUtils.setPaddingSmart(activity!!, toolbar)
     }
 
     override fun lazyLoad() {

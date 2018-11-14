@@ -13,6 +13,7 @@ import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.contract.CategoryContract
 import com.xufeng.mvpkotlin.ui.presenter.CategoryPresenter
 import com.xufeng.mvpkotlin.utils.DisplayManager
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.support.v4.toast
 
@@ -80,6 +81,11 @@ class CategoryFragment : BaseFragment(), CategoryContract.View {
                         if (position % 2 == 0) offset else 0, offset)
             }
         })
+
+        //状态栏透明和间距处理
+        StatusBarUtils.darkMode(activity!!)
+        StatusBarUtils.setPaddingSmart(activity!!, toolbar)
+        StatusBarUtils.setPaddingSmart(activity!!,mRecyclerView)
     }
 
     override fun lazyLoad() {

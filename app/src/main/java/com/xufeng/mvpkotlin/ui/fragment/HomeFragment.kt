@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.orhanobut.logger.Logger
+import com.scwang.smartrefresh.header.MaterialHeader
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.adapter.HomeAdapter
 import com.xufeng.mvpkotlin.base.BaseFragment
@@ -16,6 +17,7 @@ import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.activity.SearchActivity
 import com.xufeng.mvpkotlin.ui.contract.HomeContract
 import com.xufeng.mvpkotlin.ui.presenter.HomePresenter
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.support.v4.toast
 import java.text.SimpleDateFormat
@@ -44,8 +46,10 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         SimpleDateFormat("- MMM. dd, 'Brunch' -", Locale.ENGLISH)
     }
 
+    private var mMaterialHeader: MaterialHeader? = null
+
     override fun showLoading() {
-        if (!isRefresh){
+        if (!isRefresh) {
             isRefresh = false
             mLayoutStatusView?.showLoading()
         }
@@ -85,10 +89,19 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     override fun initView() {
         mPresenter.attachView(this)
 
+        //内容跟随偏移
+        mRefreshLayout.setEnableHeaderTranslationContent(true)
         mRefreshLayout.setOnRefreshListener {
             isRefresh = true
             mPresenter.requestHomeData(mNum)
         }
+
+        mMaterialHeader = mRefreshLayout.refreshHeader as MaterialHeader?
+        //打开下拉刷新区域块背景:
+        mMaterialHeader?.setShowBezierWave(true)
+        //设置下拉刷新主题颜色
+        mRefreshLayout.setPrimaryColorsId(R.color.app_color_theme_6, R.color.color_title_bg)
+
 
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -132,6 +145,10 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
         iv_search.setOnClickListener { openSearchActivity() }
         mLayoutStatusView = multipleStatusView
+
+        //状态栏透明和间距处理
+        StatusBarUtils.darkMode(activity!!)
+        StatusBarUtils.setPaddingSmart(activity!!, toolbar)
     }
 
     private fun openSearchActivity() {

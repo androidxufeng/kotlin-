@@ -3,7 +3,8 @@ package com.xufeng.mvpkotlin.ui.fragment
 import android.os.Bundle
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.base.BaseFragment
-import org.jetbrains.anko.support.v4.toast
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
+import kotlinx.android.synthetic.main.fragment_mine.*
 
 /**
  * Ver 1.0, 18-9-20, xufeng, Create file
@@ -25,7 +26,9 @@ class MineFragment : BaseFragment() {
     }
 
     override fun initView() {
-
+        //状态栏透明和间距处理
+        StatusBarUtils.darkMode(activity!!)
+        StatusBarUtils.setPaddingSmart(activity!!, toolbar)
     }
 
     override fun lazyLoad() {

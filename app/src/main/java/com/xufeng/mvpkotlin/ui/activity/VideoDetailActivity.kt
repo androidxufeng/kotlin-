@@ -19,6 +19,7 @@ import com.xufeng.mvpkotlin.bean.HomeBean
 import com.xufeng.mvpkotlin.glide.GlideApp
 import com.xufeng.mvpkotlin.ui.contract.VideoDetailContract
 import com.xufeng.mvpkotlin.ui.presenter.VideoDetailPresenter
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
 import com.xufeng.mvpkotlin.utils.VideoLisenter
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import org.jetbrains.anko.toast
@@ -120,6 +121,10 @@ class VideoDetailActivity : BaseActivity(), VideoDetailContract.View {
         mAdapter.setOnItemDetailClick {
             mPresenter.loadVideoInfo(it)
         }
+
+        //状态栏透明和间距处理
+        StatusBarUtils.immersive(this)
+        StatusBarUtils.setPaddingSmart(this, mVideoView)
     }
 
     override fun start() {

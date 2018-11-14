@@ -23,9 +23,11 @@ class MainActivity : BaseActivity() {
     private val mTitles = arrayOf("每日精选", "分类", "热门", "我的")
 
     // 未被选中的图标
-    private val mIconUnSelectIds = intArrayOf(R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher)
+    private val mIconUnSelectIds = intArrayOf(R.drawable.ic_home_normal, R.drawable.ic_discovery_normal,
+            R.drawable.ic_hot_normal, R.drawable.ic_mine_normal)
     // 被选中的图标
-    private val mIconSelectIds = intArrayOf(R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher)
+    private val mIconSelectIds = intArrayOf(R.drawable.ic_home_selected, R.drawable.ic_discovery_selected,
+            R.drawable.ic_hot_selected, R.drawable.ic_mine_selected)
 
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private var mHomeFragment: HomeFragment? = null

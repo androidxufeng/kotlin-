@@ -8,7 +8,10 @@ import android.util.Log
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import com.scwang.smartrefresh.header.MaterialHeader
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.xufeng.mvpkotlin.BuildConfig
+import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.utils.DisplayManager
 import kotlin.properties.Delegates
 
@@ -46,6 +49,10 @@ class MyApplication : Application() {
              //指定为经典Footer，默认是 BallPulseFooter
              ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Scale)
          }*/
+        SmartRefreshLayout.setDefaultRefreshHeaderCreater { context, layout ->
+            layout?.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white) //全局设置主题颜色
+            MaterialHeader(context)
+        }
     }
 
     private fun initConfig() {

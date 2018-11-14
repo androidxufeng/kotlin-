@@ -23,6 +23,7 @@ import com.xufeng.mvpkotlin.bean.HomeBean
 import com.xufeng.mvpkotlin.http.exception.ErrorStatus
 import com.xufeng.mvpkotlin.ui.contract.SearchContract
 import com.xufeng.mvpkotlin.ui.presenter.SearchPresenter
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
 import com.xufeng.mvpkotlin.utils.ViewAnimUtils
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.toast
@@ -98,6 +99,10 @@ class SearchActivity : BaseActivity(), SearchContract.View {
             }
         })
         mLayoutStatusView = multipleStatusView
+
+        //状态栏透明和间距处理
+        StatusBarUtils.darkMode(this)
+        StatusBarUtils.setPaddingSmart(this, toolbar)
     }
 
     override fun start() {

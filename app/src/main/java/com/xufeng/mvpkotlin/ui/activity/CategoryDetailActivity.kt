@@ -14,6 +14,7 @@ import com.xufeng.mvpkotlin.bean.HomeBean
 import com.xufeng.mvpkotlin.glide.GlideApp
 import com.xufeng.mvpkotlin.ui.contract.CategoryDetailContract
 import com.xufeng.mvpkotlin.ui.presenter.CategoryDetailPresenter
+import com.xufeng.mvpkotlin.utils.StatusBarUtils
 import kotlinx.android.synthetic.main.activity_category_detail.*
 
 /**
@@ -72,6 +73,10 @@ class CategoryDetailActivity : BaseActivity() ,CategoryDetailContract.View{
                 }
             }
         })
+
+        //状态栏透明和间距处理
+        StatusBarUtils.darkMode(this)
+        StatusBarUtils.setPaddingSmart(this, toolbar)
     }
 
     override fun start() {

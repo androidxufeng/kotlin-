@@ -6,21 +6,25 @@
     android:background="@color/color_title_bg"
     android:orientation="vertical">
 
-
-    <RelativeLayout
+    <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_title_bg">
+        <RelativeLayout
+            android:id="@+id/rel_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_setting" />
-
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_setting" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
 
     <LinearLayout
@@ -33,7 +37,7 @@
             android:id="@+id/iv_avatar"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/img_avatar"
             app:borderColor="@color/color_gray"
             app:borderWidth="2dp"
             app:type="circle" />
@@ -45,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/nickname"
-        android:textColor="@android:color/black"
+        android:textColor="@color/color_black"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -159,7 +163,5 @@
                 android:text="@string/feedback"
                 android:textSize="14sp" />
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
-
 </LinearLayout>
