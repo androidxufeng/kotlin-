@@ -43,6 +43,15 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
+        <!-- 个人主页 -->
+        <activity
+            android:name=".ui.activity.ProfileHomePageActivity"
+            android:screenOrientation="portrait" />
+        <!-- 关于 -->
+        <activity
+            android:name=".ui.activity.AboutActivity"
+            android:screenOrientation="portrait" />
+
 
     </application>
 

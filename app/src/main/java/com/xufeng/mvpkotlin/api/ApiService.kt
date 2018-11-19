@@ -1,5 +1,6 @@
 package com.xufeng.mvpkotlin.api
 
+import com.xufeng.mvpkotlin.bean.AuthorInfoBean
 import com.xufeng.mvpkotlin.bean.CategoryBean
 import com.xufeng.mvpkotlin.bean.HomeBean
 import com.xufeng.mvpkotlin.bean.TabInfoBean
@@ -67,5 +68,16 @@ interface ApiService {
      */
     @GET("v3/queries/hot")
     fun getHotWord(): Observable<ArrayList<String>>
+
+    /**
+     * 关注
+     */
+    @GET("v4/tabs/follow")
+    fun getFollowInfo():Observable<HomeBean.Issue>
+    /**
+     * 作者信息
+     */
+    @GET("v4/pgcs/detail/tab?")
+    fun getAuthorInfo(@Query("id") id: Long):Observable<AuthorInfoBean>
 
 }

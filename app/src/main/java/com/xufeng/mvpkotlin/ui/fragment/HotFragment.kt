@@ -44,7 +44,6 @@ class HotFragment : BaseFragment(), HotTabContract.View {
     }
 
     override fun initView() {
-
         //状态栏透明和间距处理
         StatusBarUtils.darkMode(activity!!)
         StatusBarUtils.setPaddingSmart(activity!!, toolbar)
@@ -65,7 +64,7 @@ class HotFragment : BaseFragment(), HotTabContract.View {
             RankFragment.getInstance(it.apiUrl)
         }
 
-        mViewPager.adapter = BaseFragmentAdapter(fragmentManager!!, mFragmentList, mTabTitleList)
+        mViewPager.adapter = BaseFragmentAdapter(childFragmentManager!!, mFragmentList, mTabTitleList)
         mTabLayout.setupWithViewPager(mViewPager)
     }
 

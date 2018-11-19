@@ -83,9 +83,9 @@ class CategoryFragment : BaseFragment(), CategoryContract.View {
         })
 
         //状态栏透明和间距处理
-        StatusBarUtils.darkMode(activity!!)
+/*        StatusBarUtils.darkMode(activity!!)
         StatusBarUtils.setPaddingSmart(activity!!, toolbar)
-        StatusBarUtils.setPaddingSmart(activity!!,mRecyclerView)
+        StatusBarUtils.setPaddingSmart(activity!!,mRecyclerView)*/
     }
 
     override fun lazyLoad() {

@@ -121,7 +121,7 @@ class test {
     fun testApply() {
         var str = StringBuilder("xufeng")
         val apply = str.apply {
-            val replace = str.append("111")
+            val replace = append("111")
             Log.d("ceshi", "with = $replace")
 
         }

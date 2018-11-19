@@ -8,10 +8,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener
 import com.xufeng.mvpkotlin.R
 import com.xufeng.mvpkotlin.base.BaseActivity
 import com.xufeng.mvpkotlin.bean.TabEntity
-import com.xufeng.mvpkotlin.ui.fragment.CategoryFragment
-import com.xufeng.mvpkotlin.ui.fragment.HomeFragment
-import com.xufeng.mvpkotlin.ui.fragment.HotFragment
-import com.xufeng.mvpkotlin.ui.fragment.MineFragment
+import com.xufeng.mvpkotlin.ui.fragment.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
@@ -20,7 +17,7 @@ import org.jetbrains.anko.toast
  */
 class MainActivity : BaseActivity() {
 
-    private val mTitles = arrayOf("每日精选", "分类", "热门", "我的")
+    private val mTitles = arrayOf("每日精选", "发现", "热门", "我的")
 
     // 未被选中的图标
     private val mIconUnSelectIds = intArrayOf(R.drawable.ic_home_normal, R.drawable.ic_discovery_normal,
@@ -31,7 +28,7 @@ class MainActivity : BaseActivity() {
 
     private val mTabEntities = ArrayList<CustomTabEntity>()
     private var mHomeFragment: HomeFragment? = null
-    private var mCategoryFragment: CategoryFragment? = null
+    private var mDiscoveryFragment: DiscoveryFragment? = null
     private var mHotFragment: HotFragment? = null
     private var mMeiTuFragment: MineFragment? = null
 
@@ -83,11 +80,11 @@ class MainActivity : BaseActivity() {
                 transaction.show(mHomeFragment)
             }
             1 //分类
-            -> if (mCategoryFragment == null) {
-                mCategoryFragment = CategoryFragment.getInstance(mTitles[position])
-                transaction.add(R.id.fl_container, mCategoryFragment, "category")
+            -> if (mDiscoveryFragment == null) {
+                mDiscoveryFragment = DiscoveryFragment.getInstance(mTitles[position])
+                transaction.add(R.id.fl_container, mDiscoveryFragment, "category")
             } else {
-                transaction.show(mCategoryFragment)
+                transaction.show(mDiscoveryFragment)
             }
             2 //热门
             -> if (mHotFragment == null) {
@@ -119,8 +116,8 @@ class MainActivity : BaseActivity() {
         if (null != mHomeFragment) {
             transaction.hide(mHomeFragment)
         }
-        if (null != mCategoryFragment) {
-            transaction.hide(mCategoryFragment)
+        if (null != mDiscoveryFragment) {
+            transaction.hide(mDiscoveryFragment)
         }
         if (null != mHotFragment) {
             transaction.hide(mHotFragment)
